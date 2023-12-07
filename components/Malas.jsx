@@ -10,7 +10,7 @@ export default function Malas() {
     const [novaMalaNome, setNovaMalaNome] = useState('');
     const [buttonMalaStyle, setButtonMalaStyle] = useState(styles.buttonMala)
     const [buttonStyle, setButtonStyle] = useState(styles.button)
-
+    
     const { isDarkTheme } = useMalas();
     
     useEffect(() => {
@@ -18,7 +18,7 @@ export default function Malas() {
         carregarMalas();
         
     }, []);
-
+    
     useEffect(() => {
         setButtonMalaStyle(StyleSheet.compose(styles.buttonMala, {
             backgroundColor: isDarkTheme ? '#b8871f' : '#783712',
@@ -73,6 +73,13 @@ export default function Malas() {
         }
     }
     
+    const apagarMala = (index) => {
+        const updatedMalas = [...malas];
+        updatedMalas.splice(index, 1);
+        setMalas(updatedMalas);
+        salvarMalas(updatedMalas);
+    };
+    
     const abrirMala = (nomeMala) => {
         navigation.navigate('Lembretes', { nomeMala });
     }
@@ -83,7 +90,7 @@ export default function Malas() {
         <View style={styles.malas}>
         {malas.map((mala, index) => (
             <View key={index} style={styles.mala}>
-            <TouchableOpacity style={buttonStyle} onPress={() => abrirMala(mala)}>
+            <TouchableOpacity style={buttonStyle} onLongPress={() => apagarMala(index)} onPress={() => abrirMala(mala)}>
             <Text style={styles.buttonText}>{mala}</Text>
             </TouchableOpacity>
             </View>
@@ -99,7 +106,7 @@ export default function Malas() {
             onChangeText={(text) => setNovaMalaNome(text)}
             />
             <TouchableOpacity style={buttonMalaStyle} onPress={() => criarMala()}>
-                <Text style={styles.textButtonMala}>Criar Mala</Text>
+            <Text style={styles.textButtonMala}>Criar Mala</Text>
             </TouchableOpacity>
             </View>
             </View>
@@ -139,7 +146,7 @@ export default function Malas() {
                 width: '100%',
                 height: '100%',
             },
-
+            
             buttonMala: {
                 // backgroundColor: '#b8871f',
                 // backgroundColor: '#783712',
@@ -147,7 +154,7 @@ export default function Malas() {
                 paddingBottom: '2.5%',
                 
             },
-
+            
             textButtonMala: {
                 textAlign: 'center',
                 color: 'white',
